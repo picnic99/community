@@ -1,1 +1,10 @@
+spring:
+  thymeleaf:
+    cache: false
 
+github:
+  client:
+    id: 700644a7b32086f198f1
+    secret: 9d262c214db0984d332c5b91e036ebad8de44165
+  redirect:
+    uri: http://localhost:8080/callback
