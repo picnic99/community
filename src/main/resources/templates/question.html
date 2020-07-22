@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/js/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="/css/community.css">
+</head>
+<body style="background-color: #dddddd">
+<div th:insert="~{navigation::nav}"></div>
+<div class="container-fluid main">
+    <div class="row">
+        <div class="col-lg-9 col-md-12 col-sm-12">
+            <h2>
+                <span style="margin: 0px 10px;" class="glyphicon glyphicon-list" aria-hidden="true"></span>发现
+            </h2>
+            <hr>
+            <div class="media" th:each="list:${questions.getList()}">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object img-thumbnail" style="height: 80px;width: 80px" th:src="${list.user.getAvatarUrl()}">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 style="color: #337ab7" class="media-heading" th:text="${list.question.getTitle()}"></h4>
+                    <p th:text="${list.question.getDescription()}" style="display: inline-block;overflow: hidden;width: 150px;word-break: keep-all;white-space: nowrap;text-overflow: ellipsis;"></p>
+                    <br>
+
+                    <span style="color: #999999;" th:text="${list.user.getName()+
+                    ' · 浏览量'+list.question.getViewCount()+
+                    ' · 评论数'+list.question.getCommentCount()+
+                    ' · 点赞数'+list.question.getLikeCount()+
+                    ' · 发布时间'+list.question.getGmtCreate()}"></span>
+
+                </div>
+                <hr>
+            </div>
+            <nav aria-label="Page navigation" style="text-align:right;">
+                <ul class="pagination pagination-lg">
+                    <li th:if="${questions.getPageNum()>1}">
+                        <a th:href="${'/?pageNum='+(questions.getPageNum()-1)}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:class="${questions.getPageNum()==pageNum?'active':''}" th:each="pageNum:${questions.getNavigatepageNums()}" ><a th:href="${'/?pageNum='+pageNum}" th:text="${pageNum}"></a></li>
+                    <li th:if="${questions.getPageNum()<questions.getPages()}">
+                        <a th:href="${'/?pageNum='+(questions.getPageNum()+1)}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-lg-3 col-md-12 col-sm-12">
+            <h3><span style="margin: 0px 10px;" class="glyphicon glyphicon-fire" aria-hidden="true"></span>热门话题</h3>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
