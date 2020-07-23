@@ -20,6 +20,7 @@ public class QuestionController {
         model.addAttribute("questions",list);
         QuestionDTO QuestionDTO = questionService.getById(id);
         model.addAttribute("questionData",QuestionDTO);
+        questionService.incView(id);
         return "question";
     }
 }

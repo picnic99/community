@@ -3,8 +3,6 @@ package com.hyy.community.community.service.impl;
 import com.hyy.community.community.mapper.UserMapper;
 import com.hyy.community.community.model.User;
 import com.hyy.community.community.service.UserService;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -3,6 +3,8 @@ package com.hyy.community.community.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hyy.community.community.dto.QuestionDTO;
+import com.hyy.community.community.exception.CustiomizeErrorCode;
+import com.hyy.community.community.exception.CustomizeException;
 import com.hyy.community.community.mapper.QuestionMapper;
 import com.hyy.community.community.mapper.UserMapper;
 import com.hyy.community.community.model.Question;
@@ -57,7 +59,11 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionDTO getById(Integer id) {
+
         Question question = questionMapper.getById(id);
+        if (question==null){
+            throw new CustomizeException(CustiomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         User user = userMapper.findById(question.getCreator().toString());
         QuestionDTO questionDTO = new QuestionDTO();
         questionDTO.setQuestion(question);
@@ -68,6 +74,11 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void update(Question question) {
         questionMapper.update(question);
+    }
+
+    @Override
+    public void incView(Integer id) {
+        questionMapper.incView(id);
     }
 
 }

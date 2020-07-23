@@ -1,27 +1,19 @@
 package com.hyy.community.community.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.hyy.community.community.dto.AccessTokenDTO;
 import com.hyy.community.community.dto.GithubUser;
-import com.hyy.community.community.mapper.UserMapper;
 import com.hyy.community.community.model.User;
 import com.hyy.community.community.provider.GithubProvider;
 import com.hyy.community.community.service.UserService;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.UUID;
 
 @Controller

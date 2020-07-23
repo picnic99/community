@@ -1,13 +1,10 @@
 package com.hyy.community.community.controller;
 
-import com.hyy.community.community.dto.GithubUser;
 import com.hyy.community.community.dto.QuestionDTO;
-import com.hyy.community.community.mapper.QuestionMapper;
 import com.hyy.community.community.model.Question;
 import com.hyy.community.community.model.User;
 import com.hyy.community.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

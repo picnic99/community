@@ -29,7 +29,7 @@
             </div>
             <hr>
             <div style="height: 30px;text-align: right" class="text-desc">
-                <span><span class="glyphicon glyphicon-edit"></span><a href="#">发表评论</a></span>
+                <span><span class="glyphicon glyphicon-edit"></span><a href="#">发表回复</a></span>
                 <span th:if="${session.user!=null&&session.user.getId()==questionData.question.getCreator()}">
                     <span class="glyphicon glyphicon-pencil"></span>
                     <a   th:href="${'/publish/'+questionData.question.getId()}">编辑</a>
@@ -38,8 +38,8 @@
             <hr>
             <div>
                 <ul class="nav nav-tabs">
-                    <li role="presentation" class="active"><a href="#">热门评论</a></li>
-                    <li role="presentation"><a href="#">最新评论</a></li>
+                    <li role="presentation" class="active"><a href="#">热门回复</a></li>
+                    <li role="presentation"><a href="#">最新回复</a></li>
                 </ul>
                 <!--<div class="media" th:each="list:${questions.getList()}">-->
                     <!--<div class="media-left">-->

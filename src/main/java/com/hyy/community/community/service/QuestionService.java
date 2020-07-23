@@ -13,4 +13,5 @@ public interface QuestionService {
     void update(Question question);
 
 
+    void incView(Integer id);
 }
