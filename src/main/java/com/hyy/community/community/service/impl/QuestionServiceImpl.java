@@ -42,6 +42,9 @@ public class QuestionServiceImpl implements QuestionService {
             User user = userMapper.findById(question.getCreator().toString());
             questionDTO.setQuestion(question);
             questionDTO.setUser(user);
+            String tag = question.getTag();
+            String[] tags = tag.split(",");
+            questionDTO.setTags(tags);
             questionDTOList.add(questionDTO);
         }
         PageInfo<QuestionDTO> questionDTOPageInfo = new PageInfo<>(questionDTOList,10);
@@ -49,7 +52,6 @@ public class QuestionServiceImpl implements QuestionService {
         questionDTOPageInfo.setPages(questionPageInfo.getPages());
         questionDTOPageInfo.setPageNum(questionPageInfo.getPageNum());
         questionDTOPageInfo.setNavigatepageNums(questionPageInfo.getNavigatepageNums());
-        System.out.println(questionDTOPageInfo);
         return questionDTOPageInfo;
     }
 
@@ -61,6 +63,11 @@ public class QuestionServiceImpl implements QuestionService {
         questionDTO.setQuestion(question);
         questionDTO.setUser(user);
         return questionDTO;
+    }
+
+    @Override
+    public void update(Question question) {
+        questionMapper.update(question);
     }
 
 }

@@ -1,15 +1,16 @@
 package com.hyy.community.community.controller;
 
 import com.hyy.community.community.dto.GithubUser;
+import com.hyy.community.community.dto.QuestionDTO;
 import com.hyy.community.community.mapper.QuestionMapper;
 import com.hyy.community.community.model.Question;
 import com.hyy.community.community.model.User;
 import com.hyy.community.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -21,13 +22,20 @@ public class PublishController {
     @Autowired
     private QuestionService questionService;
 
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable("id") Integer id, Model model){
+        QuestionDTO question = questionService.getById(id);
+        model.addAttribute("question",question);
+        return "publish";
+    }
+
     @GetMapping("/publish")
     public String publish(){
         return "publish";
     }
     @PostMapping("/doPublish")
     @ResponseBody
-    public Object doPublish(Question question, HttpServletRequest request){
+    public Object doPublish(Integer id, Question question, HttpServletRequest request){
         User user = (User)request.getSession().getAttribute("user");
         Map<String,Object> result=new HashMap<String,Object>();
         if(user!=null){
@@ -42,7 +50,17 @@ public class PublishController {
             question.setCreator(user.getId());
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
-            questionService.insert(question);
+            if(id!=null){
+                QuestionDTO questionDTO = questionService.getById(id);
+                question.setId(id);
+                question.setCommentCount(questionDTO.getQuestion().getCommentCount());
+                question.setViewCount(questionDTO.getQuestion().getViewCount());
+                question.setLikeCount(questionDTO.getQuestion().getLikeCount());
+                questionService.update(question);
+            }else{
+                questionService.insert(question);
+
+            }
             result.put("code",1);
         }else{
             result.put("code",0);

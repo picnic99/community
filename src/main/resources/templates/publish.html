@@ -15,29 +15,30 @@
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12">
             <h2>
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发布话题
             </h2>
             <hr>
             <form id="form-publish">
+                <input type="hidden" name="id" th:value="${question!=null?question.getQuestion().getId():null}">
                 <div class="form-group">
-                    <label for="title">问题标题</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="问题标题...">
+                    <label for="title">话题标题</label>
+                    <input th:value="${question!=null?question.getQuestion().getTitle():''}" type="text" class="form-control" id="title" name="title" placeholder="话题标题...">
                 </div>
                 <div class="form-group">
-                    <label for="title">问题描述(必填 , 请参照指南填写)</label>
-                    <textarea name="description" id="description" class="form-control" cols="30" rows="10"></textarea>
+                    <label for="title">话题描述(必填 , 请参照指南填写)</label>
+                    <textarea th:text="${question!=null?question.getQuestion().getDescription():''}" name="description" id="description" class="form-control" cols="30" rows="10"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="title">添加标签</label>
-                    <input type="text" class="form-control" id="tag" name="tag" placeholder="输入标签,以逗号分割">
+                    <input th:value="${question!=null?question.getQuestion().getTag():''}" type="text" class="form-control" id="tag" name="tag" placeholder="输入标签,以逗号分割">
                 </div>
                 <button type="button" class="btn btn-default btn-publish" onclick="publish()">发布</button>
             </form>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12">
-            <h3>问题发起指南</h3>
-            1 问题标题:
-            2 问题描述:
+            <h3>话题发起指南</h3>
+            1 话题标题:
+            2 话题描述:
             3 添加标签:
         </div>
 

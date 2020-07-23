@@ -7,5 +7,6 @@ import lombok.Data;
 @Data
 public class QuestionDTO {
     Question question;
+    String[] tags;
     User user;
 }

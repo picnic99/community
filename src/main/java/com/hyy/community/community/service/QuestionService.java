@@ -10,6 +10,7 @@ public interface QuestionService {
     void insert(Question question);
     PageInfo<QuestionDTO> list(Integer createId,Integer pageNum, Integer pageSize);
     QuestionDTO getById(Integer id);
+    void update(Question question);
 
 
 }

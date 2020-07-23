@@ -15,23 +15,52 @@
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12">
             <h2>
-                <span class="glyphicon glyphicon-list" aria-hidden="true"></span>发现
+                <span style="margin: 0px 10px;" class="glyphicon glyphicon-list" aria-hidden="true"></span>发现
             </h2>
             <hr>
-            <div class="media" th:each="list:${questions}">
+            <div class="media" th:each="list:${questions.getList()}">
                 <div class="media-left">
                     <a href="#">
                         <img class="media-object img-thumbnail" style="height: 80px;width: 80px" th:src="${list.user.getAvatarUrl()}">
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${list.question.getTitle()}"></h4>
-                    <p th:text="${list.question.getDescription()}"></p>
+                    <h4 style="color: #337ab7;line-height: 25px" class="media-heading" ><a
+                            th:href="${'/question/'+list.question.getId()}" th:text="${list.question.getTitle()}"></a></h4>
+                    <div style="line-height: 25px;margin-bottom: 5px;"><a style="margin-right: 5px" th:each="tag:${list.getTags()}" th:text="${tag}" class="label label-info" ></a></div>
+                    <span style="color: #999999;">
+
+                        <a href="#" style="color:#555555" th:text="${list.user.getName()}"></a>
+                        <span style="margin:0 5px" class="glyphicon glyphicon-eye-open"></span>
+                        <span th:text="${list.question.getViewCount()}"></span>
+                        <span style="margin:0 5px" class="glyphicon glyphicon-edit"></span>
+                        <span th:text="${list.question.getCommentCount()}"></span>
+                        <span style="margin:0 5px" class="glyphicon glyphicon-thumbs-up"></span>
+                        <span th:text="${list.question.getLikeCount()}"></span>
+                        <span style="margin:0 5px" class="glyphicon glyphicon-time"></span>
+                        <span th:text="${#dates.format(list.question.getGmtCreate(),'yyyy-MM-dd HH:mm:ss')}"></span>
+                    </span>
                 </div>
+                <hr>
             </div>
+            <nav aria-label="Page navigation" style="text-align:right;">
+                <ul class="pagination pagination-lg">
+                    <li th:if="${questions.getPageNum()>1}">
+                    <a th:href="${'/?pageNum='+(questions.getPageNum()-1)}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                    </li>
+                    <li th:class="${questions.getPageNum()==pageNum?'active':''}" th:each="pageNum:${questions.getNavigatepageNums()}" ><a th:href="${'/?pageNum='+pageNum}" th:text="${pageNum}"></a></li>
+                    <li th:if="${questions.getPageNum()<questions.getPages()}">
+                        <a th:href="${'/?pageNum='+(questions.getPageNum()+1)}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12">
-            <h3><span class="glyphicon glyphicon-fire" aria-hidden="true"></span>热门话题</h3>
+            <h3><span style="margin: 0px 10px;" class="glyphicon glyphicon-fire" aria-hidden="true"></span>热门话题</h3>
         </div>
 
     </div>

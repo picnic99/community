@@ -15,47 +15,61 @@
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12">
             <h2>
-                <span style="margin: 0px 10px;" class="glyphicon glyphicon-list" aria-hidden="true"></span>发现
+                <span th:text="${questionData.question.getTitle()}"></span>
             </h2>
+            <span style="color: #999999" class="text-desc">
+                <img class="media-object img-rounded"  style="margin-right: 10px;display:inline;height: 30px;width: 30px" th:src="${questionData.user.getAvatarUrl()}">
+                <span th:text="${questionData.user.getName()}"></span> |
+                发布时间: <span th:text="${#dates.format(questionData.question.getGmtCreate(),'yyyy-MM-dd HH:mm:ss')}"></span> |
+                浏览量: <span th:text="${questionData.question.getViewCount()}"></span>
+            </span>
             <hr>
-            <div class="media" th:each="list:${questions.getList()}">
-                <div class="media-left">
-                    <a href="#">
-                        <img class="media-object img-thumbnail" style="height: 80px;width: 80px" th:src="${list.user.getAvatarUrl()}">
-                    </a>
-                </div>
-                <div class="media-body">
-                    <h4 style="color: #337ab7" class="media-heading" th:text="${list.question.getTitle()}"></h4>
-                    <p th:text="${list.question.getDescription()}" style="display: inline-block;overflow: hidden;width: 150px;word-break: keep-all;white-space: nowrap;text-overflow: ellipsis;"></p>
-                    <br>
-
-                    <span style="color: #999999;" th:text="${list.user.getName()+
-                    ' · 浏览量'+list.question.getViewCount()+
-                    ' · 评论数'+list.question.getCommentCount()+
-                    ' · 点赞数'+list.question.getLikeCount()+
-                    ' · 发布时间'+list.question.getGmtCreate()}"></span>
-
-                </div>
-                <hr>
+            <div style="min-height: 120px" class="text-desc">
+                <span th:text="${questionData.question.getDescription()}"></span>
             </div>
-            <nav aria-label="Page navigation" style="text-align:right;">
-                <ul class="pagination pagination-lg">
-                    <li th:if="${questions.getPageNum()>1}">
-                        <a th:href="${'/?pageNum='+(questions.getPageNum()-1)}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li th:class="${questions.getPageNum()==pageNum?'active':''}" th:each="pageNum:${questions.getNavigatepageNums()}" ><a th:href="${'/?pageNum='+pageNum}" th:text="${pageNum}"></a></li>
-                    <li th:if="${questions.getPageNum()<questions.getPages()}">
-                        <a th:href="${'/?pageNum='+(questions.getPageNum()+1)}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
+            <hr>
+            <div style="height: 30px;text-align: right" class="text-desc">
+                <span><span class="glyphicon glyphicon-edit"></span><a href="#">发表评论</a></span>
+                <span th:if="${session.user!=null&&session.user.getId()==questionData.question.getCreator()}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    <a   th:href="${'/publish/'+questionData.question.getId()}">编辑</a>
+                </span>
+            </div>
+            <hr>
+            <div>
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="#">热门评论</a></li>
+                    <li role="presentation"><a href="#">最新评论</a></li>
                 </ul>
-            </nav>
+                <!--<div class="media" th:each="list:${questions.getList()}">-->
+                    <!--<div class="media-left">-->
+                        <!--<a href="#">-->
+                            <!--<img class="media-object img-thumbnail" style="height: 80px;width: 80px" th:src="${list.user.getAvatarUrl()}">-->
+                        <!--</a>-->
+                    <!--</div>-->
+                    <!--<div class="media-body">-->
+                        <!--<h4 style="color: #337ab7;line-height: 25px" class="media-heading" ><a-->
+                                <!--th:href="${'/question/'+list.question.getId()}" th:text="${list.question.getTitle()}"></a></h4>-->
+                        <!--<div style="line-height: 25px;margin-bottom: 5px;"><a style="margin-right: 5px" th:each="tag:${list.getTags()}" th:text="${tag}" class="label label-info" ></a></div>-->
+                        <!--<span style="color: #999999;">-->
+
+                        <!--<a href="#" style="color:#555555" th:text="${list.user.getName()}"></a>-->
+                        <!--<span style="margin:0 5px" class="glyphicon glyphicon-eye-open"></span>-->
+                        <!--<span th:text="${list.question.getViewCount()}"></span>-->
+                        <!--<span style="margin:0 5px" class="glyphicon glyphicon-edit"></span>-->
+                        <!--<span th:text="${list.question.getCommentCount()}"></span>-->
+                        <!--<span style="margin:0 5px" class="glyphicon glyphicon-thumbs-up"></span>-->
+                        <!--<span th:text="${list.question.getLikeCount()}"></span>-->
+                        <!--<span style="margin:0 5px" class="glyphicon glyphicon-time"></span>-->
+                        <!--<span th:text="${#dates.format(list.question.getGmtCreate(),'yyyy-MM-dd HH:mm:ss')}"></span>-->
+                    <!--</span>-->
+                    <!--</div>-->
+                    <!--<hr>-->
+                <!--</div>-->
+            </div>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12">
-            <h3><span style="margin: 0px 10px;" class="glyphicon glyphicon-fire" aria-hidden="true"></span>热门话题</h3>
+            <h3><span style="margin: 0px 10px;" class="glyphicon glyphicon-duplicate" aria-hidden="true"></span>相关话题</h3>
         </div>
 
     </div>

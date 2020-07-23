@@ -32,7 +32,6 @@ public class IndexController {
 
         PageInfo<QuestionDTO> list = questionService.list(null,pageNum,pageSize);
         model.addAttribute("questions",list);
-
         return "index";
     }
 }
