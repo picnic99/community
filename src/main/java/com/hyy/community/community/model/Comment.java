@@ -20,4 +20,6 @@ public class Comment {
 
     private String content;
 
-   }
+    private Integer becommentator;
+
+    }

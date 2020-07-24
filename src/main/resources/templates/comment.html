@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div style="width: 1px;margin-bottom: 20px"></div>
+<div class="media" th:each="list:${pageData.getList()}" >
+    <!--头像-->
+    <div class="media-left">
+        <a href="#">
+            <img class="media-object img-thumbnail" height="70px" width="70px" th:src="${list.getFormuser().getAvatarUrl()}" th:alt="${list.getFormuser().getName()}">
+        </a>
+    </div>
+    <!--内容-->
+    <div class="media-body">
+        <!--回复内容-->
+        <div style="min-height: 50px;line-height: 25px" class="media-heading" >
+            <span><a href="" th:text="${list.getFormuser().getName()}"></a></span>
+            <span><span style="color: #555555" th:if="${list.getTouser()!=null}"> 回复 </span><a th:if="${list.getTouser()!=null}" href="" th:text="${list.getTouser().getName()}"></a></span>
+            <br>
+            <span th:text="${list.getComment().getContent()}"></span>
+        </div>
+        <!--操作-->
+        <div style="height: 20px">
+            <span style="color: #999999;margin-right: 15px"  th:text="${#dates.format(list.getComment().getGmtCreate(),'yyyy-MM-dd HH:mm:ss')}"></span>
+            <span>
+                <style>
+                    .menu{
+                        color: #9d9d9d;
+                    }
+
+                    .menu .icon{
+                        margin-right: 6px;
+                        font-size: 15px;
+                    }
+                    .menu .icon:hover{
+                        color: #499ef3;
+                    }
+                </style>
+                <span class="menu">
+                    <span class="icon glyphicon glyphicon glyphicon-warning-sign"></span>
+                    <span class="icon glyphicon glyphicon glyphicon glyphicon-thumbs-up" th:text="${list.getComment().getLikeCount()!=0?'('+list.getComment().getLikeCount()+')':''}"></span>
+                    <span class="icon glyphicon glyphicon glyphicon glyphicon-thumbs-down"></span>
+                    <span th:if="${feedBack.type==1}" class="icon glyphicon glyphicon glyphicon glyphicon-comment" th:onclick="|getReply(2,${list.getComment().getId()},1,${feedBack.orderBy})|" th:text="${list.count!=0&&feedBack.type==1?'('+list.getCount()+')':''}"></span>
+                    <span th:if="${feedBack.type==2}" class="icon glyphicon glyphicon glyphicon glyphicon-comment" th:data-name="${list.getFormuser().name}" th:onclick="|setBecommentator(${list.getFormuser().id},this)|" th:text="${list.count!=0&&feedBack.type==1?'('+list.getCount()+')':''}"></span>
+                    <div></div>
+                </span>
+
+            </span>
+        </div>
+        <!--二级回复-->
+        <div th:id="${'comment'+list.getComment().getId()}"></div>
+    </div>
+    <hr style="margin: 10px 0">
+</div>
+<div th:if="${feedBack.type==2}">
+    <div class="input-group">
+        <input type="text" class="form-control reply-text" placeholder="说点什么吧...">
+        <span class="input-group-btn">
+        <button class="btn btn-default" type="button" th:onclick="|publish(2,${feedBack.parentId},this)|">回复</button>
+      </span>
+    </div><!-- /input-group -->
+</div>
+<nav th:if="${pageData.getPages()!=0}" aria-label="Page navigation" style="text-align:right;">
+    <ul class="pagination">
+        <li th:if="${pageData.getPageNum()>1}">
+            <a th:onclick="|getReply(${feedBack.type},${feedBack.parentId},${pageData.getPageNum()-1},${feedBack.orderBy})|" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li th:class="${pageData.getPageNum()==pageNum?'active':''}" th:each="pageNum:${pageData.getNavigatepageNums()}" ><a th:onclick="|getReply(${feedBack.type},${feedBack.parentId},${pageNum},${feedBack.orderBy})|" th:text="${pageNum}"></a></li>
+        <li th:if="${pageData.getPageNum()<pageData.getPages()}">
+            <a th:onclick="|getReply(${feedBack.type},${feedBack.parentId},${pageData.getPageNum()+1},${feedBack.orderBy})|" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+</html>

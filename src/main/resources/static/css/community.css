@@ -13,3 +13,20 @@ body{
 .media{
     margin-top: 5px;
 }
+.overflow-hidden{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.menu{
+    color: #999;
+}
+
+.menu .icon{
+    margin-right: 6px;
+    font-size: 15px;
+}
+.menu .icon:hover{
+   color: #499ef3;
+}

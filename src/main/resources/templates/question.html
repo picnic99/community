@@ -29,43 +29,33 @@
             </div>
             <hr>
             <div style="height: 30px;text-align: right" class="text-desc">
-                <span><span class="glyphicon glyphicon-edit"></span><a href="#">发表回复</a></span>
+                <span><span class="glyphicon glyphicon-edit"></span><a href="#">发表评论</a></span>
                 <span th:if="${session.user!=null&&session.user.getId()==questionData.question.getCreator()}">
                     <span class="glyphicon glyphicon-pencil"></span>
                     <a   th:href="${'/publish/'+questionData.question.getId()}">编辑</a>
                 </span>
             </div>
-            <hr>
             <div>
                 <ul class="nav nav-tabs">
-                    <li role="presentation" class="active"><a href="#">热门回复</a></li>
-                    <li role="presentation"><a href="#">最新回复</a></li>
+                    <li style="padding-top: 5px;padding-right:20px;"><span style="font-size: 20px;font-weight: bold" th:text="${'共'+questionData.question.getCommentCount()+'条回复'}"></span></li>
+                    <li role="presentation" id="byLike" onclick="setOrderBy(2)" class="active"><a>热门回复</a></li>
+                    <li role="presentation" id="byTime" onclick="setOrderBy(1)"><a>最新回复</a></li>
                 </ul>
-                <!--<div class="media" th:each="list:${questions.getList()}">-->
-                    <!--<div class="media-left">-->
-                        <!--<a href="#">-->
-                            <!--<img class="media-object img-thumbnail" style="height: 80px;width: 80px" th:src="${list.user.getAvatarUrl()}">-->
-                        <!--</a>-->
-                    <!--</div>-->
-                    <!--<div class="media-body">-->
-                        <!--<h4 style="color: #337ab7;line-height: 25px" class="media-heading" ><a-->
-                                <!--th:href="${'/question/'+list.question.getId()}" th:text="${list.question.getTitle()}"></a></h4>-->
-                        <!--<div style="line-height: 25px;margin-bottom: 5px;"><a style="margin-right: 5px" th:each="tag:${list.getTags()}" th:text="${tag}" class="label label-info" ></a></div>-->
-                        <!--<span style="color: #999999;">-->
+                <div>
+                    <ul class="media-list" id="comment">
 
-                        <!--<a href="#" style="color:#555555" th:text="${list.user.getName()}"></a>-->
-                        <!--<span style="margin:0 5px" class="glyphicon glyphicon-eye-open"></span>-->
-                        <!--<span th:text="${list.question.getViewCount()}"></span>-->
-                        <!--<span style="margin:0 5px" class="glyphicon glyphicon-edit"></span>-->
-                        <!--<span th:text="${list.question.getCommentCount()}"></span>-->
-                        <!--<span style="margin:0 5px" class="glyphicon glyphicon-thumbs-up"></span>-->
-                        <!--<span th:text="${list.question.getLikeCount()}"></span>-->
-                        <!--<span style="margin:0 5px" class="glyphicon glyphicon-time"></span>-->
-                        <!--<span th:text="${#dates.format(list.question.getGmtCreate(),'yyyy-MM-dd HH:mm:ss')}"></span>-->
-                    <!--</span>-->
-                    <!--</div>-->
-                    <!--<hr>-->
-                <!--</div>-->
+                    </ul>
+                </div>
+            </div>
+
+            <div>
+                <hr>
+                <form id="form-publish">
+                    <div class="form-group">
+                        <textarea name="content" id="content" class="form-control" cols="30" rows="10"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-default btn-publish" onclick="publish(1,null,null)">点击发表</button>
+                </form>
             </div>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12">
@@ -75,4 +65,89 @@
     </div>
 </div>
 </body>
+<script th:inline="text">
+    $.load(getReply(1,null,1,2));
+
+    var becommentatorId=null;
+
+    function setOrderBy(type) {
+        getReply(1,null,1,type);
+        if(type==1){
+            $("#byLike").removeClass("active");
+            $("#byTime").addClass("active");
+        }
+
+        if(type==2){
+            $("#byTime").removeClass("active");
+            $("#byLike").addClass("active");
+        }
+    }
+
+    function setBecommentator(becommentator,obj){
+        var name=$(obj).attr("data-name");
+        $(".reply-text").attr("placeholder","回复 "+name);
+        becommentatorId=becommentator;
+    }
+
+    function getReply(type,parentId,pageNum,orderBy) {
+        becommentatorId=null;
+        var box="#comment";
+        if (type==1) {
+            parentId=[[${questionData.question.id}]];
+        }
+        if (type==2) {
+            box=box+parentId;
+        }
+        $.ajax({
+            url: '/reply',
+            type: 'post',
+            dataType: 'text',
+            data:{"parentId":parentId,"type":type,"pageNum":pageNum,"orderBy":orderBy},
+            success: function (data) {
+                $(box).empty();
+                $(box).append(data);
+            }
+        });
+    }
+
+
+    function publish(type,parentId,obj){
+        var content;
+        var becommentator;
+
+        if (type==1) {
+            parentId=[[${questionData.question.id}]];
+            content=$("#content").val();
+        }
+        if(type==2){
+            content=$(obj).parent().prev().val();
+        }
+        if(becommentatorId!=null)
+        {
+            becommentator=becommentatorId;
+        }
+
+
+        $.ajax(
+            {
+                type: "POST",
+                dataType: "json",
+                url: "/doComment",
+                data:{"content": content,"parentId":parentId,"type":type,"becommentator":becommentator},
+                success: function (data){
+                    if(data.code==1){
+                        alert("发表成功!");
+                        location.reload();
+                    }
+                    if(data.code==0){
+                        alert(data.msg);
+                    }
+                }
+            }
+        );
+    }
+
+
+
+</script>
 </html>

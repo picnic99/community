@@ -21,7 +21,7 @@ public class IndexController {
     private QuestionService questionService;
 
     @GetMapping("/")
-    public String index(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "7")Integer pageSize, HttpServletRequest request, Model model){
+    public String index(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10")Integer pageSize, HttpServletRequest request, Model model){
 
         PageInfo<QuestionDTO> list = questionService.list(null,pageNum,pageSize);
         model.addAttribute("questions",list);
