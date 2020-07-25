@@ -2,6 +2,7 @@ package com.hyy.community.community.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.hyy.community.community.dto.CommentDTO;
+import com.hyy.community.community.dto.CommentParamDTO;
 import com.hyy.community.community.dto.ResultDTO;
 import com.hyy.community.community.exception.CustomizeException;
 import com.hyy.community.community.model.Comment;
@@ -46,19 +47,34 @@ public class CommentController {
 
 
     @PostMapping("/reply")
-    public String reply(Model model,Integer type,Integer parentId,
+    public String reply(Model model,
+                        CommentParamDTO commentParamDTO,
                         @RequestParam(defaultValue = "1") Integer pageNum,
-                        @RequestParam(defaultValue = "10")Integer pageSize,
-                        @RequestParam(defaultValue = "2")Integer orderBy
+                        @RequestParam(defaultValue = "10")Integer pageSize
                         ){
-        PageInfo<CommentDTO> comments = commentService.getComments(type, parentId, pageNum, pageSize,orderBy);
-        model.addAttribute("pageData",comments);
+
+        if (commentParamDTO.getOrderBy()==null){
+            commentParamDTO.setOrderBy(2);
+        }
+
+        PageInfo<CommentDTO> comments = commentService.getComments(commentParamDTO,pageNum, pageSize);
+
         HashMap<String, Integer> feedBack = new HashMap<>();
-        feedBack.put("type",type);
-        feedBack.put("parentId",parentId);
-        feedBack.put("orderBy",orderBy);
+        feedBack.put("type",commentParamDTO.getType());
+        feedBack.put("parentId",commentParamDTO.getParentId());
+        feedBack.put("orderBy",commentParamDTO.getOrderBy());
+
         model.addAttribute("pageData",comments);
         model.addAttribute("feedBack",feedBack);
-        return "comment";
+
+        if(commentParamDTO.getType()==1){
+            return "comment1";
+        }
+        if (commentParamDTO.getType()==2){
+            return "comment2";
+        }
+
+        return "/";
+
     }
 }

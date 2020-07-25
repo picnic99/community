@@ -38,36 +38,28 @@
                     <span class="icon glyphicon glyphicon glyphicon-warning-sign"></span>
                     <span class="icon glyphicon glyphicon glyphicon glyphicon-thumbs-up" th:text="${list.getComment().getLikeCount()!=0?'('+list.getComment().getLikeCount()+')':''}"></span>
                     <span class="icon glyphicon glyphicon glyphicon glyphicon-thumbs-down"></span>
-                    <span th:if="${feedBack.type==1}" class="icon glyphicon glyphicon glyphicon glyphicon-comment" th:onclick="|getReply(2,${list.getComment().getId()},1,${feedBack.orderBy})|" th:text="${list.count!=0&&feedBack.type==1?'('+list.getCount()+')':''}"></span>
-                    <span th:if="${feedBack.type==2}" class="icon glyphicon glyphicon glyphicon glyphicon-comment" th:data-name="${list.getFormuser().name}" th:onclick="|setBecommentator(${list.getFormuser().id},this)|" th:text="${list.count!=0&&feedBack.type==1?'('+list.getCount()+')':''}"></span>
-                    <div></div>
+                    <span class="icon glyphicon glyphicon glyphicon glyphicon-comment" th:onclick="|getReply(2,${list.getComment().getId()},1,${feedBack.orderBy})|" th:text="${list.count!=0?'('+list.getCount()+')':''}"></span>
                 </span>
 
             </span>
         </div>
         <!--二级回复-->
-        <div th:id="${'comment'+list.getComment().getId()}"></div>
+        <div th:id="${'comment'+list.getComment().getId()}" class="wait">
+
+        </div>
     </div>
-    <hr style="margin: 10px 0">
+    <hr style="margin: 12px 0">
 </div>
-<div th:if="${feedBack.type==2}">
-    <div class="input-group">
-        <input type="text" class="form-control reply-text" placeholder="说点什么吧...">
-        <span class="input-group-btn">
-        <button class="btn btn-default" type="button" th:onclick="|publish(2,${feedBack.parentId},this)|">回复</button>
-      </span>
-    </div><!-- /input-group -->
-</div>
-<nav th:if="${pageData.getPages()!=0}" aria-label="Page navigation" style="text-align:right;">
-    <ul class="pagination">
+<nav th:if="${pageData.getPages()!=0}" aria-label="Page navigation " style="text-align:right;">
+    <ul class="pagination" style="margin: 10px 0;">
         <li th:if="${pageData.getPageNum()>1}">
-            <a th:onclick="|getReply(${feedBack.type},${feedBack.parentId},${pageData.getPageNum()-1},${feedBack.orderBy})|" aria-label="Previous">
+            <a th:onclick="|getReply(1,${feedBack.parentId},${pageData.getPageNum()-1},${feedBack.orderBy})|" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
             </a>
         </li>
-        <li th:class="${pageData.getPageNum()==pageNum?'active':''}" th:each="pageNum:${pageData.getNavigatepageNums()}" ><a th:onclick="|getReply(${feedBack.type},${feedBack.parentId},${pageNum},${feedBack.orderBy})|" th:text="${pageNum}"></a></li>
+        <li th:class="${pageData.getPageNum()==pageNum?'active':''}" th:each="pageNum:${pageData.getNavigatepageNums()}" ><a th:onclick="|getReply(1,${feedBack.parentId},${pageNum},${feedBack.orderBy})|" th:text="${pageNum}"></a></li>
         <li th:if="${pageData.getPageNum()<pageData.getPages()}">
-            <a th:onclick="|getReply(${feedBack.type},${feedBack.parentId},${pageData.getPageNum()+1},${feedBack.orderBy})|" aria-label="Next">
+            <a th:onclick="|getReply(1,${feedBack.parentId},${pageData.getPageNum()+1},${feedBack.orderBy})|" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
             </a>
         </li>

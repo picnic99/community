@@ -23,8 +23,9 @@ public class QuestionServiceImpl implements QuestionService {
     @Autowired
     private UserMapper userMapper;
     @Override
-    public void insert(Question question) {
+    public int insert(Question question) {
         questionMapper.insert(question);
+        return question.getId();
     }
 
     @Override
@@ -66,6 +67,9 @@ public class QuestionServiceImpl implements QuestionService {
         }
         User user = userMapper.findById(question.getCreator().toString());
         QuestionDTO questionDTO = new QuestionDTO();
+        String tag = question.getTag();
+        String[] tags = tag.split(",");
+        questionDTO.setTags(tags);
         questionDTO.setQuestion(question);
         questionDTO.setUser(user);
         return questionDTO;

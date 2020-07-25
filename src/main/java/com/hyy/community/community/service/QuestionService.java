@@ -7,7 +7,7 @@ import com.hyy.community.community.model.Question;
 import java.util.List;
 
 public interface QuestionService {
-    void insert(Question question);
+    int insert(Question question);
     PageInfo<QuestionDTO> list(Integer createId,Integer pageNum, Integer pageSize);
     QuestionDTO getById(Integer id);
     void update(Question question);

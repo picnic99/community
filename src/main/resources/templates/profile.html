@@ -29,17 +29,21 @@
                     <p th:text="${list.question.getDescription()}" style="display: inline-block;overflow: hidden;width: 150px;word-break: keep-all;white-space: nowrap;text-overflow: ellipsis;"></p>
                     <br>
 
-                    <span style="color: #999999;" th:text="${list.user.getName()+
-                    ' · 浏览量'+list.question.getViewCount()+
-                    ' · 评论数'+list.question.getCommentCount()+
-                    ' · 点赞数'+list.question.getLikeCount()+
-                    ' · 发布时间'+list.question.getGmtCreate()}"></span>
+                    <a href="#" style="color:#555555" th:text="${list.user.getName()}"></a>
+                    <span style="margin:0 5px" class="glyphicon glyphicon-eye-open"></span>
+                    <span th:text="${list.question.getViewCount()}"></span>
+                    <span style="margin:0 5px" class="glyphicon glyphicon-edit"></span>
+                    <span th:text="${list.question.getCommentCount()}"></span>
+                    <span style="margin:0 5px" class="glyphicon glyphicon-thumbs-up"></span>
+                    <span th:text="${list.question.getLikeCount()}"></span>
+                    <span style="margin:0 5px" class="glyphicon glyphicon-time"></span>
+                    <span th:text="${#dates.format(list.question.getGmtCreate(),'yyyy-MM-dd HH:mm:ss')}"></span>
 
                 </div>
                 <hr>
             </div>
             <nav th:if="${section=='question'}" aria-label="Page navigation" style="text-align:right;">
-                <ul class="pagination pagination-lg">
+                <ul class="pagination">
                     <li th:if="${dataList.getPageNum()>1}">
                         <a th:href="${'/profile/question?pageNum='+(dataList.getPageNum()-1)}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>

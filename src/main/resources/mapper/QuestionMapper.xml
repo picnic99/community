@@ -34,7 +34,7 @@
     delete from question
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.hyy.community.community.model.Question">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.hyy.community.community.model.Question">
     insert into question (id, title, gmt_create, 
       gmt_modified, creator,  tag,
       description)

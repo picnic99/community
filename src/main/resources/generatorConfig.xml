@@ -77,6 +77,10 @@
             <!--<columnOverride column="avatar_url" javaType="java.lang.String"></columnOverride>-->
         <!--</table>-->
 
-        <table schema="" tableName="comment" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"></table>
+        <!--<table schema="" tableName="comment" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"></table>-->
+        <table schema="" tableName="tag" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"></table>
+        <table schema="" tableName="tag-question" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"></table>
+
+
     </context>
 </generatorConfiguration>

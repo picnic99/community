@@ -2,22 +2,25 @@ package com.hyy.community.community.controller;
 
 import com.hyy.community.community.dto.QuestionDTO;
 import com.hyy.community.community.model.Question;
+import com.hyy.community.community.model.Tag;
 import com.hyy.community.community.model.User;
 import com.hyy.community.community.service.QuestionService;
+import com.hyy.community.community.service.TagQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class PublishController {
 
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private TagQuestionService tagQuestionService;
 
     @GetMapping("/publish/{id}")
     public String edit(@PathVariable("id") Integer id, Model model){
@@ -44,9 +47,10 @@ public class PublishController {
                 result.put("code",102);//描述为空
                 return result;
             }
+            Long time=System.currentTimeMillis();
             question.setCreator(user.getId());
-            question.setGmtCreate(System.currentTimeMillis());
-            question.setGmtModified(question.getGmtCreate());
+            question.setGmtCreate(time);
+            question.setGmtModified(time);
             if(id!=null){
                 QuestionDTO questionDTO = questionService.getById(id);
                 question.setId(id);
@@ -55,7 +59,19 @@ public class PublishController {
                 question.setLikeCount(questionDTO.getQuestion().getLikeCount());
                 questionService.update(question);
             }else{
-                questionService.insert(question);
+                String tags = question.getTag();
+                String[] split = tags.split(",");
+
+                List<Tag> tagList=new ArrayList<>();
+                for (String s : split) {
+                    Tag tag = new Tag();
+                    tag.setGmtCreate(time);
+                    tag.setCreator(user.getId().longValue());
+                    tag.setName(s);
+                    tagList.add(tag);
+                }
+                Integer questionid = (Integer) questionService.insert(question);
+                tagQuestionService.addTagQuestion(tagList,questionid.longValue());
 
             }
             result.put("code",1);
