@@ -11,4 +11,7 @@ public class Tag {
     private Long creator;
 
     private Long gmtCreate;
+
+    private Long useCount;
+
 }

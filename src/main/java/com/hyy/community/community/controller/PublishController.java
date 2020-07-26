@@ -1,6 +1,7 @@
 package com.hyy.community.community.controller;
 
 import com.hyy.community.community.dto.QuestionDTO;
+import com.hyy.community.community.dto.ResultDTO;
 import com.hyy.community.community.model.Question;
 import com.hyy.community.community.model.Tag;
 import com.hyy.community.community.model.User;
@@ -37,27 +38,24 @@ public class PublishController {
     @ResponseBody
     public Object doPublish(Integer id, Question question, HttpServletRequest request){
         User user = (User)request.getSession().getAttribute("user");
-        Map<String,Object> result=new HashMap<String,Object>();
+        ResultDTO result = null;
         if(user!=null){
             if(question.getTitle().equals("")){
-                result.put("code",101);//标题为空
+                result= new ResultDTO(0,"标题不能为空",null);
                 return result;
             }
             if(question.getDescription().equals("")){
-                result.put("code",102);//描述为空
+                result= new ResultDTO(0,"描述不能为空",null);
                 return result;
             }
+
             Long time=System.currentTimeMillis();
-            question.setCreator(user.getId());
-            question.setGmtCreate(time);
             question.setGmtModified(time);
+            question.setGmtCreate(time);
+            question.setCreator(user.getId());
             if(id!=null){
-                QuestionDTO questionDTO = questionService.getById(id);
                 question.setId(id);
-                question.setCommentCount(questionDTO.getQuestion().getCommentCount());
-                question.setViewCount(questionDTO.getQuestion().getViewCount());
-                question.setLikeCount(questionDTO.getQuestion().getLikeCount());
-                questionService.update(question);
+                questionService.edit(question);
             }else{
                 String tags = question.getTag();
                 String[] split = tags.split(",");
@@ -74,9 +72,10 @@ public class PublishController {
                 tagQuestionService.addTagQuestion(tagList,questionid.longValue());
 
             }
-            result.put("code",1);
+            result= new ResultDTO(1,"success",null);
         }else{
-            result.put("code",0);
+            result= new ResultDTO(0,"请先登录后重试!",null);
+
         }
         return result;
 

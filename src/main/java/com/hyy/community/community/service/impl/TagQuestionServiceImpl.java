@@ -2,7 +2,6 @@ package com.hyy.community.community.service.impl;
 
 import com.hyy.community.community.mapper.TagMapper;
 import com.hyy.community.community.mapper.TagQuestionMapper;
-import com.hyy.community.community.model.Question;
 import com.hyy.community.community.model.Tag;
 import com.hyy.community.community.model.TagQuestion;
 import com.hyy.community.community.service.TagQuestionService;
@@ -29,8 +28,9 @@ public class TagQuestionServiceImpl implements TagQuestionService {
                 tagMapper.insert(tag);
                 tagQuestion.setTagId(tag.getId());
             }else{
+                temp.setUseCount(temp.getUseCount()+1);
+                tagMapper.updateByPrimaryKeySelective(temp);
                 tagQuestion.setTagId(temp.getId());
-
             }
             tagQuestion.setQuestionId(questionId);
             tagQuestionMapper.insert(tagQuestion);

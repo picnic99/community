@@ -5,13 +5,17 @@ import com.github.pagehelper.PageInfo;
 import com.hyy.community.community.dto.CommentDTO;
 import com.hyy.community.community.dto.CommentParamDTO;
 import com.hyy.community.community.enums.CommentTypeEnum;
+import com.hyy.community.community.enums.NoticeTypeEnum;
 import com.hyy.community.community.enums.OrderByEnum;
 import com.hyy.community.community.exception.CustiomizeErrorCode;
 import com.hyy.community.community.exception.CustomizeException;
 import com.hyy.community.community.mapper.CommentMapper;
+import com.hyy.community.community.mapper.NoticeMapper;
 import com.hyy.community.community.mapper.QuestionMapper;
 import com.hyy.community.community.mapper.UserMapper;
 import com.hyy.community.community.model.Comment;
+import com.hyy.community.community.model.Notice;
+import com.hyy.community.community.model.Question;
 import com.hyy.community.community.model.User;
 import com.hyy.community.community.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,20 +33,27 @@ public class CommentServiceImpl implements CommentService {
     private QuestionMapper questionMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private NoticeMapper noticeMapper;
 
     @Override
     @Transactional
     public void addComment(Comment comment) {
         Integer type = comment.getType();
-        Object commentDB=null;
+        Comment commentDB=null;
+        Question questionDB=null;
+        Notice notice = new Notice();
         if(comment.getCommentator()==null){
             throw new CustomizeException(CustiomizeErrorCode.USER_NOT_LOGIN);
         }
 
         if(type.equals(CommentTypeEnum.QUESTION.getType())){
-            commentDB = questionMapper.selectByPrimaryKey(comment.getParentId().intValue());
-            if(commentDB==null){
+            questionDB = questionMapper.selectByPrimaryKey(comment.getParentId().intValue());
+            if(questionDB==null){
                 throw new CustomizeException(CustiomizeErrorCode.QUESTION_NOT_FOUND);
+            }else{
+                notice.setType(NoticeTypeEnum.REPLY_QUESTION.getCode());
+                notice.setReceiveId(questionDB.getCreator().longValue());
             }
 
         }
@@ -50,9 +61,18 @@ public class CommentServiceImpl implements CommentService {
             commentDB = commentMapper.selectByPrimaryKey(comment.getParentId());
             if(commentDB==null){
                 throw new CustomizeException(CustiomizeErrorCode.COMMENT_NOT_FOUND);
+            }else{
+                notice.setType(NoticeTypeEnum.REPLY_COMMENT.getCode());
+                notice.setReceiveId(commentDB.getCommentator().longValue());
             }
         }
 
+        notice.setSendId(comment.getCommentator().longValue());
+        notice.setRelativeId(comment.getParentId());
+        notice.setGmtCreate(comment.getGmtCreate());
+        if(notice.getSendId()!=notice.getReceiveId()){
+            noticeMapper.insert(notice);
+        }
         commentMapper.insert(comment);
         if(type.equals(CommentTypeEnum.QUESTION.getType())){
             questionMapper.incComment(comment.getParentId().intValue());

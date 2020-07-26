@@ -53,33 +53,11 @@
             <!--<columnOverride column="age" javaType="java.lang.Integer"></columnOverride>-->
             <!--<columnOverride column="path" javaType="java.lang.String"></columnOverride>-->
         <!--</table>-->
-        <!--<table schema="" tableName="question" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">-->
-            <!--<columnOverride column="id" javaType="java.lang.Integer"></columnOverride>-->
-            <!--<columnOverride column="title" javaType="java.lang.String"></columnOverride>-->
-            <!--<columnOverride column="description" javaType="java.lang.String"></columnOverride>-->
-            <!--<columnOverride column="gmt_create" javaType="java.lang.Long"></columnOverride>-->
-            <!--<columnOverride column="gmt_modified" javaType="java.lang.Long"></columnOverride>-->
-            <!--<columnOverride column="creator" javaType="java.lang.Integer"></columnOverride>-->
-            <!--<columnOverride column="comment_count" javaType="java.lang.Integer"></columnOverride>-->
-            <!--<columnOverride column="view_count" javaType="java.lang.Integer"></columnOverride>-->
-            <!--<columnOverride column="like_count" javaType="java.lang.Integer"></columnOverride>-->
-            <!--<columnOverride column="tag" javaType="java.lang.String"></columnOverride>-->
-        <!--</table>-->
-
-        <!--<table schema="" tableName="user" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false">-->
-            <!--<columnOverride column="id" javaType="java.lang.Integer"></columnOverride>-->
-            <!--<columnOverride column="account_id" javaType="java.lang.String"></columnOverride>-->
-            <!--<columnOverride column="name" javaType="java.lang.String"></columnOverride>-->
-            <!--<columnOverride column="token" javaType="java.lang.String"></columnOverride>-->
-            <!--<columnOverride column="gmt_create" javaType="java.lang.Long"></columnOverride>-->
-            <!--<columnOverride column="gmt_modified" javaType="java.lang.Long"></columnOverride>-->
-            <!--<columnOverride column="bio" javaType="java.lang.String"></columnOverride>-->
-            <!--<columnOverride column="avatar_url" javaType="java.lang.String"></columnOverride>-->
-        <!--</table>-->
 
         <!--<table schema="" tableName="comment" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"></table>-->
-        <table schema="" tableName="tag" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"></table>
-        <table schema="" tableName="tag-question" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"></table>
+        <!--<table schema="" tableName="tag" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"></table>-->
+        <!--<table schema="" tableName="tag_question" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"></table>-->
+        <table schema="" tableName="notice" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false"></table>
 
 
     </context>

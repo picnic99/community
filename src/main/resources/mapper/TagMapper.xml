@@ -6,9 +6,10 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="creator" jdbcType="BIGINT" property="creator" />
     <result column="gmt_create" jdbcType="BIGINT" property="gmtCreate" />
+    <result column="use_count" jdbcType="BIGINT" property="useCount" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, creator, gmt_create
+    id, name, creator, gmt_create, use_count
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -41,6 +42,9 @@
       <if test="gmtCreate != null">
         gmt_create,
       </if>
+      <if test="useCount != null">
+        use_count,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -54,6 +58,9 @@
       </if>
       <if test="gmtCreate != null">
         #{gmtCreate,jdbcType=BIGINT},
+      </if>
+      <if test="useCount != null">
+        #{useCount,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -69,6 +76,9 @@
       <if test="gmtCreate != null">
         gmt_create = #{gmtCreate,jdbcType=BIGINT},
       </if>
+      <if test="useCount != null">
+        use_count = #{useCount,jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -76,7 +86,8 @@
     update tag
     set name = #{name,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=BIGINT},
-      gmt_create = #{gmtCreate,jdbcType=BIGINT}
+      gmt_create = #{gmtCreate,jdbcType=BIGINT},
+      use_count = #{useCount,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

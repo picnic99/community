@@ -76,7 +76,14 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public void update(Question question) {
+    public void edit(Question question) {
+        Question questionTemp = questionMapper.getById(question.getId());
+        question.setCreator(questionTemp.getCreator());
+        question.setGmtCreate(questionTemp.getGmtCreate());
+        question.setGmtModified(System.currentTimeMillis());
+        question.setCommentCount(questionTemp.getCommentCount());
+        question.setViewCount(questionTemp.getViewCount());
+        question.setLikeCount(questionTemp.getLikeCount());
         questionMapper.update(question);
     }
 

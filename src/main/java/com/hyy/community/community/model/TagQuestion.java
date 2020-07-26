@@ -9,4 +9,5 @@ public class TagQuestion {
     private Long questionId;
 
     private Long tagId;
+
 }

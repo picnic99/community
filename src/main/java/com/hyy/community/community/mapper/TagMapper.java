@@ -19,7 +19,6 @@ public interface TagMapper {
     int updateByPrimaryKeySelective(Tag record);
 
     int updateByPrimaryKey(Tag record);
-
     @Select("select * from tag where name=#{name}")
     Tag getByName(String name);
 }
