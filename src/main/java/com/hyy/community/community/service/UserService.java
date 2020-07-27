@@ -7,4 +7,5 @@ public interface UserService {
     User findByToken(String token);
     User findByAccountId(String accountId);
     void update(User user);
+    User getByAccountAndPassword(String account,String password);
 }

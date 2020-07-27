@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
@@ -88,4 +89,22 @@ public class AuthorizeController {
         return "redirect:/";
     }
 
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+    @PostMapping("/doLogin")
+    public String doLogin(String account,String password,
+                          HttpServletRequest request,
+                          HttpServletResponse response){
+
+        User user = userService.getByAccountAndPassword(account, password);
+        if(user!=null){
+            String token = user.getToken();
+            request.getSession().setAttribute("user",user);
+            response.addCookie(new Cookie("token",token));
+            return "redirect:/";
+        }
+        return "login";
+    }
 }

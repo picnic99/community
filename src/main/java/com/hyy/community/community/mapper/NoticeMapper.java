@@ -25,6 +25,6 @@ public interface NoticeMapper {
     @Select("select * from notice where receive_id=#{receiveId} and status!=2 order by gmt_create desc")
     List<Notice> getByReceiveId(Integer receiveId);
 
-    @Select("select count(*) from notice where receive_id=#{receiveId} and status!=2")
+    @Select("select count(*) from notice where receive_id=#{receiveId} and status=0")
     int getUncheckNoticeCountByReceiveId(Integer receiveId);
 }

@@ -37,9 +37,9 @@
                 </style>
                 <span class="menu">
                     <span class="icon glyphicon glyphicon glyphicon-warning-sign"></span>
-                    <span class="icon glyphicon glyphicon glyphicon glyphicon-thumbs-up" th:text="${list.getComment().getLikeCount()!=0?'('+list.getComment().getLikeCount()+')':''}"></span>
-                    <span class="icon glyphicon glyphicon glyphicon glyphicon-thumbs-down"></span>
-                    <span class="icon glyphicon glyphicon glyphicon glyphicon-comment" th:data-name="${list.getFormuser().name}" th:onclick="|setBecommentator(${list.getFormuser().id},this)|"></span>
+                    <span th:style="${list.getIsPraise()==1?'margin-right: 5px;cursor:pointer;color:#499ef3':'margin-right: 5px;cursor:pointer;'}"  th:class="${list.getIsPraise()==1}?'lk like icon glyphicon glyphicon-thumbs-up':'lk icon glyphicon glyphicon-thumbs-up'" th:onclick="|doPraise(2,${list.getComment().getId()},this)|">(<span th:text="${list.getComment().getLikeCount()}"></span>)</span>
+                    <span style="cursor:pointer;" class="icon glyphicon glyphicon-thumbs-down"></span>
+                    <span style="cursor:pointer;" class="icon glyphicon glyphicon-comment" th:data-name="${list.getFormuser().name}" th:onclick="|setBecommentator(${list.getFormuser().id},this)|"></span>
                 </span>
 
             </span>

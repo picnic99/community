@@ -30,3 +30,16 @@ body{
 .menu .icon:hover{
    color: #499ef3;
 }
+
+#noticeList{
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+
+}
+#noticeList p{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 25px;
+}

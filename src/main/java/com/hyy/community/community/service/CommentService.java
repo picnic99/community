@@ -10,6 +10,6 @@ public interface CommentService {
 
     void addComment(Comment comment);
 
-    PageInfo<CommentDTO> getComments(CommentParamDTO commentParamDTO, Integer pageNum, Integer pageSize);
+    PageInfo<CommentDTO> getComments(Integer currentUser,CommentParamDTO commentParamDTO, Integer pageNum, Integer pageSize);
 
 }

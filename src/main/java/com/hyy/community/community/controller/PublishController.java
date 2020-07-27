@@ -25,7 +25,7 @@ public class PublishController {
 
     @GetMapping("/publish/{id}")
     public String edit(@PathVariable("id") Integer id, Model model){
-        QuestionDTO question = questionService.getById(id);
+        QuestionDTO question = questionService.getById(null,id);
         model.addAttribute("question",question);
         return "publish";
     }

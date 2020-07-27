@@ -9,14 +9,8 @@ import com.hyy.community.community.enums.NoticeTypeEnum;
 import com.hyy.community.community.enums.OrderByEnum;
 import com.hyy.community.community.exception.CustiomizeErrorCode;
 import com.hyy.community.community.exception.CustomizeException;
-import com.hyy.community.community.mapper.CommentMapper;
-import com.hyy.community.community.mapper.NoticeMapper;
-import com.hyy.community.community.mapper.QuestionMapper;
-import com.hyy.community.community.mapper.UserMapper;
-import com.hyy.community.community.model.Comment;
-import com.hyy.community.community.model.Notice;
-import com.hyy.community.community.model.Question;
-import com.hyy.community.community.model.User;
+import com.hyy.community.community.mapper.*;
+import com.hyy.community.community.model.*;
 import com.hyy.community.community.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +29,8 @@ public class CommentServiceImpl implements CommentService {
     private UserMapper userMapper;
     @Autowired
     private NoticeMapper noticeMapper;
+    @Autowired
+    private PraiseMapper praiseMapper;
 
     @Override
     @Transactional
@@ -81,7 +77,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public PageInfo<CommentDTO> getComments(CommentParamDTO commentParamDTO, Integer pageNum, Integer pageSize) {
+    public PageInfo<CommentDTO> getComments(Integer currentUser,CommentParamDTO commentParamDTO, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<Comment> comments=null;
         /**
@@ -119,6 +115,17 @@ public class CommentServiceImpl implements CommentService {
             commentDTO.setComment(comment);
             commentDTO.setFormuser(formuser);
             commentDTO.setTouser(touser);
+            commentDTO.setIsPraise(0);
+            if(currentUser!=null){
+                Praise praise = new Praise();
+                praise.setUserId(currentUser.longValue());
+                praise.setType(CommentTypeEnum.COMMENT.getType());
+                praise.setRelativeId(comment.getId());
+                Praise praiseDB = praiseMapper.getByParam(praise);
+                if (praiseDB!=null&&praiseDB.getStatus()==1){
+                    commentDTO.setIsPraise(1);
+                }
+            }
             commentDTOList.add(commentDTO);
         }
         PageInfo<CommentDTO> commentDTOPageInfo = new PageInfo<>(commentDTOList,10);

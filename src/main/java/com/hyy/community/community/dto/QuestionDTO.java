@@ -9,4 +9,5 @@ public class QuestionDTO {
     Question question;
     String[] tags;
     User user;
+    Integer isPraise;
 }

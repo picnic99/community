@@ -21,7 +21,14 @@
                 <img class="media-object img-circle"  style="margin-right: 5px;display:inline;height: 30px;width: 30px" th:src="${questionData.user.getAvatarUrl()}">
                 <a style="margin-right: 10px" th:text="${questionData.user.getName()}"></a>
                 浏览量: <span style="margin-right: 10px" th:text="${questionData.question.getViewCount()}"></span>
-                发布时间: <span th:text="${#dates.format(questionData.question.getGmtCreate(),'yyyy-MM-dd HH:mm:ss')}"></span>
+                发布时间: <span style="margin-right: 10px" th:text="${#dates.format(questionData.question.getGmtCreate(),'yyyy-MM-dd HH:mm:ss')}"></span>
+                <style>
+                    .lk:hover{
+                        color: #499ef3;
+                    }
+                </style>
+                <span th:style="${questionData.getIsPraise()==1?'margin-right: 5px;cursor:pointer;color:#499ef3':'margin-right: 5px;cursor:pointer;'}"  th:class="${questionData.getIsPraise()==1}?'lk like icon glyphicon glyphicon-thumbs-up':'lk icon glyphicon glyphicon-thumbs-up'" th:onclick="|doPraise(1,${questionData.question.getId()},this)|">(<span th:text="${questionData.question.getLikeCount()}"></span>)</span>
+                <span style="cursor:pointer;" class="icon glyphicon glyphicon glyphicon glyphicon-thumbs-down"></span>
                 <div style="font-size: 13px;line-height: 25px;margin-bottom: 5px;">相关标签:  <a style="font-size: 13px;margin-right: 5px" th:each="tag:${questionData.getTags()}" th:text="${tag}" class="label label-info" ></a></div>
             </span>
             <hr>
@@ -33,7 +40,7 @@
                 <span style="color: #337ab7;margin: 0px 5px;" class="glyphicon glyphicon-comment"></span><a  onclick="javascript:document.getElementById('box-reply').scrollIntoView()">发表评论</a>
                 <span th:if="${session.user!=null&&session.user.getId()==questionData.question.getCreator()}">
                     <span style="color: #337ab7;margin: 0px 5px;" class="glyphicon glyphicon-edit"></span>
-                    <a   th:href="${'/publish/'+questionData.question.getId()}">编辑</a>
+                    <a th:href="${'/publish/'+questionData.question.getId()}">编辑</a>
                 </span>
             </div>
             <div>
@@ -172,7 +179,55 @@
         );
     }
 
+    function doPraise(type,id,obj){
+    var count=parseInt($(obj).children(":first").html());
+        if($(obj).is(".like")){
 
+            $.ajax(
+                {
+                    type: "POST",
+                    dataType: "json",
+                    url: "/doPraise",
+                    data:{"relativeId": id,"status":0,"type":type},
+                    success: function (data){
+                        if(data.code==1){
+                            alert("取消成功!");
+                            $(obj).css("color","#9d9d9d");
+                            $(obj).removeClass("like");
+                            $(obj).children(":first").html(count-1);
+                        }
+                        if(data.code==0){
+                            alert(data.msg);
+                        }
+                    }
+                }
+            );
+
+        }else{
+
+            $.ajax(
+                {
+                    type: "POST",
+                    dataType: "json",
+                    url: "/doPraise",
+                    data:{"relativeId": id,"status":1,"type":type},
+                    success: function (data){
+                        if(data.code==1){
+                            alert("点赞成功!");
+                            $(obj).css("color"," #499ef3");
+                            $(obj).addClass("like");
+                            $(obj).children(":first").html(count+1);
+                        }
+                        if(data.code==0){
+                            alert(data.msg);
+                        }
+                    }
+                }
+            );
+
+
+        }
+    }
 
 </script>
 </html>

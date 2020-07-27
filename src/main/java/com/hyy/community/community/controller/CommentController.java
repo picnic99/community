@@ -50,14 +50,23 @@ public class CommentController {
     public String reply(Model model,
                         CommentParamDTO commentParamDTO,
                         @RequestParam(defaultValue = "1") Integer pageNum,
-                        @RequestParam(defaultValue = "10")Integer pageSize
+                        @RequestParam(defaultValue = "10")Integer pageSize,
+                        HttpServletRequest request
                         ){
+
 
         if (commentParamDTO.getOrderBy()==null){
             commentParamDTO.setOrderBy(2);
         }
 
-        PageInfo<CommentDTO> comments = commentService.getComments(commentParamDTO,pageNum, pageSize);
+        User user = (User)request.getSession().getAttribute("user");
+        PageInfo<CommentDTO> comments=null;
+        if (user==null){
+            comments = commentService.getComments(null,commentParamDTO,pageNum, pageSize);
+
+        }else{
+            comments = commentService.getComments(user.getId(),commentParamDTO,pageNum, pageSize);
+        }
 
         HashMap<String, Integer> feedBack = new HashMap<>();
         feedBack.put("type",commentParamDTO.getType());

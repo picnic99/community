@@ -3,6 +3,7 @@ package com.hyy.community.community.mapper;
 import com.hyy.community.community.model.Comment;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,4 +28,8 @@ public interface CommentMapper {
     List<Comment> listByTypeAndIdDescByLike(Integer type, Integer parentId);
     @Select("select count(*) from comment where type=#{type} and parent_id=#{parentId}")
     int countByTypeAndId(Integer type, Integer parentId);
+    @Update("update comment set like_count=like_count+1 where id=#{id}")
+    void incLike(Long id);
+    @Update("update comment set like_count=like_count-1 where id=#{id}")
+    void decLike(Long id);
 }

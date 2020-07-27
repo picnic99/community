@@ -39,4 +39,8 @@ public interface QuestionMapper {
     void incView(Integer id);
     @Update("update question set comment_count=comment_count+1 where id=#{id}")
     void incComment(Integer id);
+    @Update("update question set like_count=like_count+1 where id=#{id}")
+    void incLike(Long id);
+    @Update("update question set like_count=like_count-1 where id=#{id}")
+    void decLike(Long id);
 }

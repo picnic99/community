@@ -1,7 +1,6 @@
 package com.hyy.community.community.mapper;
 
 import com.hyy.community.community.model.User;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -22,7 +21,8 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
-
+    @Select("select * from user where account=#{account} and password=#{password}")
+    User getByAccountAndPassword(String account,String password);
     @Select("select * from user where token=#{token}")
     User findByToken(String token);
     @Select("select * from user where account_id=#{accountId}")

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<li th:each="list:${notices.getList()}" >
+    <p>
+        <span style="color: red;font-size: 23px">•</span>
+        <span style="color: #499ef3;cursor:pointer;" href="" th:text="${list.user.getName()}"></span>
+        <span th:text="${list.getTypeMessage()}"></span>
+        <span style="color: #499ef3;cursor:pointer;" th:if="${list.getType()==1}" href="" th:text="${list.getQuestion().getTitle()}"></span>
+        <span style="color: #499ef3;cursor:pointer;" th:if="${list.getType()==2}" href="" th:text="${list.getComment().getContent()}"></span>
+    </p>
+</li>
+</html>
